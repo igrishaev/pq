@@ -98,7 +98,7 @@
         (Arena/ofConfined)
 
         ^List args [
-                    (to-seq arena "host=localhost port=15432 dbname=test user=test password=test")
+                    (to-seq arena "host=localhost port=5432 dbname=book user=book password=book")
 
                     ;; (to-seq arena "127.0.0.1")
                     ;; (to-seq arena "15432")
@@ -113,10 +113,10 @@
         (.invokeWithArguments method args)
 
         mem-seg-2
-        (.get (.find lookup "PQsslInUse" #_ "PQhost" #_ "PQstatus"))
+        (.get (.find lookup #_ "PQsslInUse" "PQhost" #_ "PQstatus"))
 
         func-descriptor-2
-        (FunctionDescriptor/of #_ValueLayout/ADDRESS ValueLayout/JAVA_INT
+        (FunctionDescriptor/of ValueLayout/ADDRESS #_ValueLayout/JAVA_INT
                                (into-array MemoryLayout
                                            [ValueLayout/ADDRESS]))
 
@@ -135,7 +135,7 @@
         ]
 
     (println conn)
-    (println result)
+    (println (-> result (.reinterpret Integer/MAX_VALUE) (.getString 0)))
     #_
     (println (new String ^chars (.toArray result ValueLayout/JAVA_CHAR))))
 
